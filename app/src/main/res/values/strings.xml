@@ -1,5 +1,3 @@
 <resources>
-    <string name="title">Main</string>
-    <string name="app_name">NFCassistant</string>
-    <string name="button1_name">Button1</string>
+    <string name="app_name">NFC</string>
 </resources>
