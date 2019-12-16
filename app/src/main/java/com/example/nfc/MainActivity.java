@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button SendButton;
     private Button RecvButton;
+    private Button TestButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,15 @@ public class MainActivity extends AppCompatActivity {
 
 //                Toast.makeText(MainActivity.this,"请打开WLAN以及NFC",Toast.LENGTH_SHORT).show();
                 //跳转到recv
+            }
+        });
 
+        TestButton = findViewById(R.id.btn_test);
+        TestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this, Main2Activity.class);
+                startActivity(intent);
             }
         });
     }
