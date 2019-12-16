@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button SendButton;
     private Button RecvButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,19 +48,17 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                turnOnHotspot();
 
                 if (nfcAdapter != null && nfcAdapter.isEnabled()) {
                     Toast.makeText(MainActivity.this, "nfc enabled", Toast.LENGTH_SHORT).show();
+                    turnOnHotspot();
+                    //跳转到send
+                    Intent intent=new Intent(MainActivity.this,SendActivity.class);
+                    startActivity(intent);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "nfc disabled", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
                 }
-//                Toast.makeText(MainActivity.this,"请打开WLAN以及NFC",Toast.LENGTH_SHORT).show();
-                //跳转到send
-                Intent intent=new Intent(MainActivity.this,SendActivity.class);
-                startActivity(intent);
-
             }
         });
 
@@ -78,15 +77,16 @@ public class MainActivity extends AppCompatActivity {
 
                 if (nfcAdapter != null && nfcAdapter.isEnabled()) {
                     Toast.makeText(MainActivity.this, "nfc enabled", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(MainActivity.this,RecvActivity.class);
+                    startActivity(intent);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "nfc disabled", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
                 }
 
 //                Toast.makeText(MainActivity.this,"请打开WLAN以及NFC",Toast.LENGTH_SHORT).show();
                 //跳转到recv
-                Intent intent=new Intent(MainActivity.this,RecvActivity.class);
-                startActivity(intent);
+
             }
         });
     }
@@ -101,7 +101,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
                 super.onStarted(reservation);
-                Toast.makeText(MainActivity.this, "wifi hotspot is on", Toast.LENGTH_SHORT).show();
+                String SSID = reservation.getWifiConfiguration().SSID;
+                String preSharedKey = reservation.getWifiConfiguration().preSharedKey;
+                Toast.makeText(MainActivity.this, "wifi hotspot SSID: "+SSID + " password: " + preSharedKey, Toast.LENGTH_SHORT).show();
                 mReservation = reservation;
             }
 

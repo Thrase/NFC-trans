@@ -8,6 +8,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.net.Uri;
@@ -18,11 +19,14 @@ public class SendActivity extends AppCompatActivity {
     private WifiManager.LocalOnlyHotspotReservation mReservation;
 
     private Button StartSend;
+//    private TextView TextSSID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
+
+//        TextSSID = findViewById(R.id.text_ssid);
 
         StartSend = findViewById(R.id.btn_startsend);
         StartSend.setOnClickListener(new View.OnClickListener() {

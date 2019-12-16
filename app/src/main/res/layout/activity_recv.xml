@@ -11,11 +11,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="请将您的设备\n\n靠近发送设备\n\n以此建立连接"
         android:layout_gravity="center"
+        android:layout_marginTop="200dp"
         android:gravity="center"
-        android:textSize="40sp"
+        android:text="请将您的设备\n\n靠近发送设备\n\n以建立连接"
         android:textColor="#FFFFFF"
-        />
+        android:textSize="40sp" />
 </LinearLayout>
