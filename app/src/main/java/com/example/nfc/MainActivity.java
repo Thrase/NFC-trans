@@ -90,14 +90,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TestButton = findViewById(R.id.btn_test);
-        TestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this, Main2Activity.class);
-                startActivity(intent);
-            }
-        });
+//        TestButton = findViewById(R.id.btn_test);
+//        TestButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent=new Intent(MainActivity.this, Main2Activity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
 

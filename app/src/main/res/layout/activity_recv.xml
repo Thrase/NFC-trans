@@ -12,9 +12,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:text="请将您的设备\n\n靠近发送设备\n\n以建立连接"
         android:textColor="#FFFFFF"
-        android:textSize="40sp" />
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="#305B9D"
+        android:text="连接Wifi"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
+        />
+
 </LinearLayout>

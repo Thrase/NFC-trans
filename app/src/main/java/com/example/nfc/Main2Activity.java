@@ -33,12 +33,11 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
     /*
      * i*命名的整型变量代表主界面底部三个按钮被按下的次数； startActivityTime为时间值，单位毫秒；
      */
-    private int iAll = 0, iDefault = 0, iWhere = 0, startActivityTime = 2000;
+//    private int iAll = 0;
     /* 定义各个界面的按钮； */
-    private Button btnAll, btnDefault, btnWhere,
-            btnOneToMainActivity, btnController;
+    private Button btnAll;
     /* 定义主界面的三个TextView组件； */
-    private TextView textView_all, textView_default, textView_where;
+//    private TextView textView_all;
     /* 定义当前设备的NfcAdapter； */
     private NfcAdapter mNfcAdapter;
     /* */
@@ -67,7 +66,7 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
     /**
      * 默认配置，测试时使用！！！
      */
-    String mSSID = "RhkySocket", mPASSWORD = "flamingoeda";
+    String mSSID = "testWifi", mPASSWORD = "supercow";
     int mTYPE = 3;
     String deviceName = "Test-PC", ipAdress = "192.168.1.109";
     int post = 30000;
@@ -80,11 +79,39 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
         /*
          * 在显示开始界面的情况下后台启动主界面， 直到过了startActivityTime时间后显示主界面；
          */
-        Handler x = new Handler();
-        x.postDelayed(new defaultStartApp(), startActivityTime);
+//      Handler x = new Handler();
+//      x.postDelayed(new defaultStartApp(), startActivityTime);
+//      x.post(new defaultStartApp());
+
+//      setMainActivityButtonAndTextView();
+//      Toast.makeText(this, "call autowifi", Toast.LENGTH_LONG).show();
+
+//      AutoWifi(mSSID, mPASSWORD, mTYPE);
+//      connectedSocketServer(deviceName, ipAdress, post);
+
+        WifiConfig myWifi = new WifiConfig(this);
+        myWifi.openWifi();
+
+
+        boolean b;
+        if (!isWifiConnect() || !myWifi.getSSID().equals(mSSID)) {
+            myWifi.addNetwork(myWifi.CreateWifiInfo(mSSID, mPASSWORD, mTYPE));
+            do {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                b = isWifiConnect();
+            } while (!b);
+        }
+
+        Toast.makeText(this, "AutoWifi done", Toast.LENGTH_LONG).show();
+
 
         /* NFC相关; */
-        nfcManager();
+//        nfcManager();
+
 
         /* 记录使用前wifi的状态； */
         if (isWifiEnabled()) {
@@ -107,7 +134,7 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
             /*
              * 无NFC手机测试wifi自动连接使用，需要更改初始值为所用路由器无线信息；
              */
-            // AutoWifi(mSSID, mPASSWORD, mTYPE);
+             AutoWifi(mSSID, mPASSWORD, mTYPE);
             // connectedSocketServer(deviceName, ipAdress, post);
         }
     }
@@ -117,7 +144,9 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
      */
     class nfcStartApp implements Runnable {
         public void run() {
+
             sendConfigToAutoWifi(nfcStr);
+
             /*
              * 将无线网络名称str[0]、无线网络密码str[1]、 无线加密类型str[2]，传递给AutoWifi方法；
              */
@@ -177,7 +206,7 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
         nfcStr = new String(msg.getRecords()[0].getPayload());
         /* 后台调用nfcStartApp()方法，分析读到的消息并开始wifi连接; */
         Handler x = new Handler();
-        x.postDelayed(new nfcStartApp(), startActivityTime);
+        x.post(new nfcStartApp());
     }
 
     /* 将nfc读到的消息分解后传递给AutoWifi方法进行自动连接； */
@@ -196,12 +225,15 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
         ipAdress = str[4];
         post = Integer.valueOf(str[5]);
         /* 清空nfcStr字符串 */
-        nfcStr = "Ren-gh_ren.gh.1989_3_A1_192.168.1.253_30000";
+        nfcStr = "";
         ++nfcStatue;
     }
 
     /* 根据传递过来的三个无线网络参数连接wifi网络； */
     private void AutoWifi(String ssid, String passwd, Integer type) {
+
+
+
         /*
          * 创建对象，打开wifi功能，等到wifi启动完成后将传递来的wifi网络添加进Network，
          * 然后等待连接诶成功后，传递设备名称，设备IP，设备端口号给connectedSocketServer方法，
@@ -255,9 +287,9 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
                 .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 //        Toast.makeText(this, "检查连接wifi成功完毕", Toast.LENGTH_LONG).show();
         if (mWifi.isConnected() == true)
-            Toast.makeText(this, "wifi连接：true", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "wifi连接：connected", Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(this, "wifi连接：false", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "wifi连接：unconnected", Toast.LENGTH_LONG).show();
         return mWifi.isConnected();
     }
 
@@ -316,14 +348,6 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
 //        });
 //    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mNfcAdapter != null) {
-            /* 适时关闭前台调用，避免资源被占用； */
-            mNfcAdapter.disableForegroundDispatch(this);
-        }
-    }
 
     /* 设置TextView和按钮，为按钮监听事件， */
     private void setMainActivityButtonAndTextView() {
@@ -331,68 +355,17 @@ public class Main2Activity extends Activity implements Button.OnClickListener {
         btnAll = (Button) findViewById(R.id.btnAll);
         btnAll.setOnClickListener(this);
         /* 推荐展览点 按钮监听; */
-        btnDefault = (Button) findViewById(R.id.btnDefault);
-        btnDefault.setOnClickListener(this);
-        /* 您的位置 按钮监听; */
-        btnWhere = (Button) findViewById(R.id.btnWhere);
-        btnWhere.setOnClickListener(this);
-        /* 下一页界面按钮监听; */
-
-        textView_all = (TextView) findViewById(R.id.textView_all);
-        textView_default = (TextView) findViewById(R.id.textView_default);
-        textView_where = (TextView) findViewById(R.id.textView_where);
-    }
-
-    /* 关联one.xml界面布局中的“回到首页”按钮，设置监听事件; */
-    private void setOneActivityButtonAndTextView() {
-        btnOneToMainActivity = (Button) findViewById(R.id.btnOneToMainActivity);
-        btnOneToMainActivity.setOnClickListener(this);
-
-        btnController = (Button) findViewById(R.id.btnController);
-        btnController.setOnClickListener(this);
     }
 
     /* 按钮点击事件处理方法; */
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAll:
-                textView_all.setText("所有展品" + iAll++);
+                Toast.makeText(this, "Click", Toast.LENGTH_LONG).show();
                 break;
-            case R.id.btnDefault:
-                textView_default.setText("推荐展品" + iDefault++);
-                break;
-            case R.id.btnWhere:
-                textView_where.setText("我的位置" + iWhere++);
-                break;
-
-            case R.id.btnOneToMainActivity:
-                setContentView(R.layout.activity_main2);
-                /* 设置layout_main.xml布局中的按钮和TextView控件; */
-                setMainActivityButtonAndTextView();
-                break;
-
-            case R.id.btnController:
-                break;
-
             default:
                 break;
         }
     }
 
-    /* 返回键的监听事件； */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            /*
-             * WifiConfig myWifi; myWifi = new WifiConfig(this);
-             * if(isWifiEnableStatue == 1) { myWifi.removeWifiNetwork();
-             * myWifi.closeWifi(); } // 如果wifi已连接，断开wifi连接并退出
-             * if(isWifiConnectedStatue == 1) { myWifi.removeWifiNetwork();
-             * myWifi.disconnectWifi(); }
-             */
-            finish();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }
