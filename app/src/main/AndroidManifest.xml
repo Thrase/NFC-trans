@@ -21,11 +21,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Sending_NFC"></activity>
+        <activity android:name=".Sending_NFC" />
         <activity
             android:name=".Receiving_NFC"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 

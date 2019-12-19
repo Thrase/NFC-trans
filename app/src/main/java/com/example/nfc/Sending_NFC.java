@@ -54,7 +54,7 @@ public class Sending_NFC extends AppCompatActivity implements NfcAdapter.CreateN
 
         String SSIDSK = SSID + "," + SSIDKey;
 
-        NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT(SSIDSK.equals("") ? "发了一条空消息" : SSIDSK, false, false);
+        NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT(SSIDSK.equals("") ? "empty message" : SSIDSK, false, false);
         return message;
     }
 

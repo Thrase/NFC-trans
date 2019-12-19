@@ -131,11 +131,11 @@ public class Receiving_NFC extends AppCompatActivity {
         payLoadStr = new String(payloads, languageCodeLength + 1, payloads.length - languageCodeLength - 1, Charset.forName(textEncoding));
         //  解析完成- -NFC阶段结束
         textView.setText("接受到的信息为:" + payLoadStr);
-        Toast.makeText(this, "接收:" + payLoadStr, Toast.LENGTH_LONG).show();
         String S[] = payLoadStr.split(",");
         SSID = S[0];
         SSIDKey = S[1];
-        AutoWifi(SSID, SSIDKey, 3);
+        int IPAd = AutoWifi(SSID, SSIDKey, 3);
+        Toast.makeText(this, "IPAddress:" + IPAd, Toast.LENGTH_LONG).show();
     }
 
     private void checkNFCFunction() {
@@ -184,7 +184,7 @@ public class Receiving_NFC extends AppCompatActivity {
     }
 
     /* 根据传递过来的三个无线网络参数连接wifi网络； */
-    private void AutoWifi(String ssid, String passwd, Integer type) {
+    private int AutoWifi(String ssid, String passwd, Integer type) {
 
         type=3;
 
@@ -193,10 +193,11 @@ public class Receiving_NFC extends AppCompatActivity {
          * 然后等待连接诶成功后，传递设备名称，设备IP，设备端口号给connectedSocketServer方法，
          * 用来连接远程Socket服务器；Integer.valueOf(str[5])是将字符串转换为整型；
          */
-        /**
+        /*
          * 定义AutoWifiConfig对象，通过该对象对wifi进行操作； WifiConfig myWifi = new
          * WifiConfig(this); 不能用作全局，不然会出现刷nfc连接wifi，连接到socket，再刷nfc时程序卡死的情况；
          */
+
         WifiConfig myWifi = new WifiConfig(this);
         Boolean b;
         if (!isWifiEnabled()) {
@@ -223,6 +224,7 @@ public class Receiving_NFC extends AppCompatActivity {
             } while (!b);
             isWifiConnectedStatue = 1;
         }
+        return myWifi.getIPAddress();
     }
 
     /* 检查wifi是否可用；是则返回true； */
@@ -230,7 +232,7 @@ public class Receiving_NFC extends AppCompatActivity {
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager
                 .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        Toast.makeText(this, "检测wifi可用完毕", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "检测wifi可用完毕", Toast.LENGTH_LONG).show();
         return mWifi.isAvailable();
     }
 
@@ -240,10 +242,6 @@ public class Receiving_NFC extends AppCompatActivity {
         NetworkInfo mWifi = connManager
                 .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 //        Toast.makeText(this, "检查连接wifi成功完毕", Toast.LENGTH_LONG).show();
-        if (mWifi.isConnected() == true)
-            Toast.makeText(this, "wifi连接：connected", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(this, "wifi连接：unconnected", Toast.LENGTH_LONG).show();
         return mWifi.isConnected();
     }
 
