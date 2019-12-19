@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecvActivity"
+    tools:context=".Receiving_NFC"
     android:orientation="vertical"
     android:background="#3370CC">
 
@@ -16,19 +16,20 @@
         android:gravity="center"
         android:text="请将您的设备\n\n靠近发送设备\n\n以建立连接"
         android:textColor="#FFFFFF"
-        android:textSize="30sp" />
+        android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/btn_test"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="50dp"
+
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:gravity="center"
         android:layout_gravity="center"
-        android:background="#305B9D"
-        android:text="连接Wifi"
+        android:text="请靠近发送端"
+        android:layout_marginTop="100dp"
         android:textColor="#FFFFFF"
-        android:textSize="48sp"
-        />
+        android:textSize="26dp" />
 
 </LinearLayout>

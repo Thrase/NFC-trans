@@ -1,22 +1,18 @@
 package com.example.nfc;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.app.Activity;
-import android.net.Uri;
 
-import java.lang.reflect.Method;
+import androidx.annotation.RequiresApi;
 
 
 public class SendActivity extends Activity {
@@ -73,7 +69,9 @@ public class SendActivity extends Activity {
         TestNFC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SendActivity.this, NFCMain.class);
+                Intent intent = new Intent(SendActivity.this, Sending_NFC.class);
+                intent.putExtra("SSID", SSID);
+                intent.putExtra("SSIDKey", SSIDKey);
                 startActivity(intent);
             }
         });
