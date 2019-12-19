@@ -12,7 +12,6 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +25,7 @@ public class Receiving_NFC extends AppCompatActivity {
     private NfcAdapter mNfcAdapter;
 
     private TextView textView;
+    private TextView textView_IP;
     private Button TestButton;
 
     private String SSID;
@@ -40,6 +40,7 @@ public class Receiving_NFC extends AppCompatActivity {
 
         checkNFCFunction();
         textView = (TextView) findViewById(R.id.tv);
+        textView_IP = findViewById(R.id.tv2);
 
     }
     //  * * * * * * * * * * * * * * * * * * * * * * * NFC start * * * * * * * * * * * * * * * * * * * * * * * ↓
@@ -135,7 +136,7 @@ public class Receiving_NFC extends AppCompatActivity {
         SSID = S[0];
         SSIDKey = S[1];
         int IPAd = AutoWifi(SSID, SSIDKey, 3);
-        Toast.makeText(this, "IPAddress:" + IPAd, Toast.LENGTH_LONG).show();
+        textView_IP.setText("IP Address: " + IPAd);
     }
 
     private void checkNFCFunction() {

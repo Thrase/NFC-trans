@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Receiving_NFC"
     android:orientation="vertical"
+    android:gravity="center"
     android:background="#3370CC">
 
     <TextView
@@ -16,6 +17,18 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:text="请靠近发送端"
+        android:textColor="#FFFFFF"
+        android:textSize="26dp" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="IP Address"
         android:textColor="#FFFFFF"
         android:textSize="26dp" />
 

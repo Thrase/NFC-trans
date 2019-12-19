@@ -42,7 +42,7 @@ public class Sending_NFC extends AppCompatActivity implements NfcAdapter.CreateN
         Intent intent = getIntent();
         SSID = intent.getStringExtra("SSID");
         SSIDKey = intent.getStringExtra("SSIDKey");
-        Toast.makeText(this, SSID + SSIDKey , Toast.LENGTH_LONG).show();
+        Toast.makeText(this, SSID +","+ SSIDKey , Toast.LENGTH_LONG).show();
 
         //  注册事件  并触发自动申请权限
         mNfcAdapter.setNdefPushMessageCallback(this, this);
