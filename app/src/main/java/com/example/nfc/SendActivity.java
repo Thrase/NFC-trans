@@ -23,6 +23,7 @@ public class SendActivity extends Activity {
 
     private Button StartSend;
     private Button TestSSID;
+    private Button TestNFC;
 //    private TextView TextSSID;
 
     String SSID;
@@ -65,6 +66,15 @@ public class SendActivity extends Activity {
                 intent.setType("*/*");//无类型限制
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, 1);
+            }
+        });
+
+        TestNFC = findViewById(R.id.btn_testNFC);
+        TestNFC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SendActivity.this, NFCMain.class);
+                startActivity(intent);
             }
         });
     }
