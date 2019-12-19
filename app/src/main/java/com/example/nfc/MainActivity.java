@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String pubSSID, pubSSIDKey;
+
     private WifiManager wifiManager;
     private NfcManager nfcManager;
     private NfcAdapter nfcAdapter;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button SendButton;
     private Button RecvButton;
-    private Button TestButton;
+//    private Button TestButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +53,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (nfcAdapter != null && nfcAdapter.isEnabled()) {
-                    Toast.makeText(MainActivity.this, "nfc enabled", Toast.LENGTH_SHORT).show();
-                    turnOnHotspot();
+//                    Toast.makeText(MainActivity.this, "nfc enabled", Toast.LENGTH_SHORT).show();
+//                    String SSSSK = turnOnHotspot();
+//                    String S[] = SSSSK.split(",");
+//                    pubSSID = S[0];
+//                    pubSSIDKey = S[1];
+
                     //跳转到send
                     Intent intent=new Intent(MainActivity.this,SendActivity.class);
+//                    intent.putExtra("SSID", pubSSID);
+//                    intent.putExtra("SSIDKey", pubSSIDKey);
                     startActivity(intent);
                 }
                 else {
@@ -102,17 +110,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     @RequiresApi(26)
-    private void turnOnHotspot() {
+    private String turnOnHotspot() {
         WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
         manager.startLocalOnlyHotspot(new WifiManager.LocalOnlyHotspotCallback() {
 
             @Override
             public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
+
                 super.onStarted(reservation);
                 String SSID = reservation.getWifiConfiguration().SSID;
+                pubSSID = SSID;
                 String preSharedKey = reservation.getWifiConfiguration().preSharedKey;
-                Toast.makeText(MainActivity.this, "wifi hotspot SSID: "+SSID + " password: " + preSharedKey, Toast.LENGTH_SHORT).show();
+                pubSSIDKey = preSharedKey;
+//                Toast.makeText(MainActivity.this, "wifi hotspot SSID: "+SSID + " password: " + preSharedKey, Toast.LENGTH_SHORT).show();
                 mReservation = reservation;
             }
 
@@ -128,6 +139,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "wifi hotspot failed", Toast.LENGTH_SHORT).show();
             }
         }, new Handler());
+
+        String rtString = new String(pubSSID + "," + pubSSIDKey);
+        Toast.makeText(MainActivity.this, rtString, Toast.LENGTH_SHORT).show();
+        return rtString;
     }
 
     private void turnOffHotspot() {

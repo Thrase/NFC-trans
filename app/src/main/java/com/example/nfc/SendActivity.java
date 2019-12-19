@@ -1,11 +1,14 @@
 package com.example.nfc;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,18 +16,44 @@ import android.widget.Toast;
 import android.app.Activity;
 import android.net.Uri;
 
+import java.lang.reflect.Method;
 
-public class SendActivity extends AppCompatActivity {
 
-    private WifiManager.LocalOnlyHotspotReservation mReservation;
+public class SendActivity extends Activity {
 
     private Button StartSend;
+    private Button TestSSID;
 //    private TextView TextSSID;
+
+    String SSID;
+    String SSIDKey;
+    boolean hotspotflag =false;
+
+    private WifiManager.LocalOnlyHotspotReservation mReservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
+
+        TestSSID = findViewById(R.id.btn_testSSID);
+        TestSSID.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View view) {
+//              Intent intent = getIntent();
+//              SSID = intent.getStringExtra("SSID");
+//              SSIDKey = intent.getStringExtra("SSIDKey");
+                if (hotspotflag == false) {
+                    turnOnHotspot();
+                    hotspotflag=true;
+                }
+                else {
+                    Toast.makeText(SendActivity.this, "wifi hotspot SSID: "+SSID + " password: " + SSIDKey, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
 //        TextSSID = findViewById(R.id.text_ssid);
 
@@ -53,5 +82,24 @@ public class SendActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    @RequiresApi(26)
+    private void turnOnHotspot() {
+        WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        manager.startLocalOnlyHotspot(new WifiManager.LocalOnlyHotspotCallback() {
+
+            @Override
+            public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
+
+                super.onStarted(reservation);
+                SSID = reservation.getWifiConfiguration().SSID;
+                SSIDKey = reservation.getWifiConfiguration().preSharedKey;
+                Toast.makeText(SendActivity.this, "wifi hotspot SSID: "+SSID + " password: " + SSIDKey, Toast.LENGTH_SHORT).show();
+                mReservation = reservation;
+            }
+        }, new Handler());
+
     }
 }

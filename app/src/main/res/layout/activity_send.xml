@@ -15,7 +15,7 @@
         android:textSize="36sp"
         android:textColor="#FFFFFF"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         />
 
@@ -24,11 +24,24 @@
         android:id="@+id/btn_startsend"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:background="#305B9D"
         android:text="选择文件"
         android:textColor="#FFFFFF"
         android:textSize="36sp"
         />
+
+    <Button
+        android:id="@+id/btn_testSSID"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:background="#305B9D"
+        android:text="testSSID"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        />
+
 </LinearLayout>
