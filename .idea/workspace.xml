@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4e81805-0e01-43b8-89e3-8095c4e0bb94" name="Default Changelist" comment="">
+    <list default="true" id="b4e81805-0e01-43b8-89e3-8095c4e0bb94" name="Default Changelist" comment="still a bug in socket">
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -14,7 +14,7 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receiving_Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receiving_Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receving_Get_NFC.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receving_Get_NFC.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Sending_Get_NFC.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Sending_Get_NFC.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_receving_get_nfc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_receving_get_nfc.xml" afterDir="false" />
@@ -42,49 +42,45 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receiving_Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="76" column="52" selection-start-line="76" selection-start-column="52" selection-end-line="76" selection-end-column="52" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1852#2501#0" expanded="true" />
-                <element signature="e#2500#2501#0" expanded="true" />
-                <element signature="e#3106#3508#0" expanded="true" />
-                <element signature="e#3507#3508#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Sending_Get_NFC.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="83" column="28" lean-forward="true" selection-start-line="83" selection-start-column="28" selection-end-line="83" selection-end-column="28" />
+            <state relative-caret-position="457">
+              <caret line="389" column="8" selection-start-line="389" selection-start-column="8" selection-end-line="389" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2068#2417#0" expanded="true" />
                 <element signature="e#2416#2417#0" expanded="true" />
-                <element signature="e#2456#3712#0" expanded="true" />
-                <element signature="e#2614#3652#0" expanded="true" />
-                <element signature="e#3651#3652#0" expanded="true" />
-                <element signature="e#3711#3712#0" expanded="true" />
+                <element signature="e#2529#3911#0" expanded="true" />
+                <element signature="e#2912#3878#0" expanded="true" />
+                <element signature="e#3877#3878#0" expanded="true" />
+                <element signature="e#3910#3911#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="269">
+              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            </state>
+          </provider>
+          <provider editor-type-id="android-manifest" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receving_Get_NFC.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="93" column="48" lean-forward="true" selection-start-line="93" selection-start-column="48" selection-end-line="93" selection-end-column="48" />
+            <state relative-caret-position="362">
+              <caret line="208" column="39" lean-forward="true" selection-start-line="208" selection-start-column="39" selection-end-line="208" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1655#2903#0" expanded="true" />
-                <element signature="e#2902#2903#0" expanded="true" />
+                <element signature="e#1912#3048#0" expanded="true" />
+                <element signature="e#3047#3048#0" expanded="true" />
+                <element signature="e#3151#3261#0" expanded="true" />
+                <element signature="e#3260#3261#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -94,8 +90,8 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_sending_get_nfc.xml">
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="542">
-              <caret line="69" column="28" lean-forward="true" selection-start-line="69" selection-start-column="28" selection-end-line="69" selection-end-column="28" />
+            <state relative-caret-position="371">
+              <caret line="21" selection-start-line="21" selection-end-line="21" />
             </state>
           </provider>
         </entry>
@@ -104,18 +100,8 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_receving_get_nfc.xml">
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="21" column="39" lean-forward="true" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_receving_main.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
-              <caret line="35" column="37" lean-forward="true" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
+            <state relative-caret-position="342">
+              <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -174,7 +160,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Wifi_APManager.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/ClientThread.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/WifiConfig.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main2.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/NfcUtils.java" />
@@ -198,15 +183,16 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_send.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_receving.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_sending.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_receving_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receiving_Main.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_sending_get_nfc.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Sending_Get_NFC.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/ClientThread.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_receving_get_nfc.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_sending_get_nfc.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receving_Get_NFC.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/nfc/Sending_Get_NFC.java" />
       </list>
     </option>
   </component>
@@ -229,6 +215,11 @@
             <path>
               <item name="NFC" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
+            </path>
+            <path>
+              <item name="NFC" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
             </path>
             <path>
               <item name="NFC" type="1abcf292:AndroidViewProjectNode" />
@@ -260,10 +251,10 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="c7134a9f" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2019-12-20T11:15:02.217Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="988914385a5450304d" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2019-12-20T16:07:55.498Z" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/HotSpotSocket-master/HotSpotSocket-master" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/SocketDemo_jb51/SocketDemo_jb51" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -418,7 +409,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576834647043</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="still a bug in socket">
+      <created>1576841530189</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1576841530189</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -432,6 +430,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.1826411" />
@@ -442,14 +441,14 @@
       <window_info id="Designer" order="6" />
       <window_info id="Resources Explorer" order="7" />
       <window_info id="Capture Tool" order="8" />
-      <window_info anchor="bottom" id="Run" order="0" sideWeight="0.4978701" visible="true" weight="0.13066955" />
+      <window_info active="true" anchor="bottom" id="Run" order="0" sideWeight="0.8828541" visible="true" weight="0.2937365" />
       <window_info anchor="bottom" id="Logcat" order="1" />
       <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49935815" weight="0.19705094" />
       <window_info anchor="bottom" id="Debug" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="5" sideWeight="0.5021299" side_tool="true" visible="true" weight="0.13066955" />
+      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.1171459" side_tool="true" visible="true" weight="0.2937365" />
       <window_info anchor="bottom" id="Version Control" order="6" sideWeight="0.49733758" weight="0.32937366" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.61608094" weight="0.19222462" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.615016" weight="0.3574514" />
       <window_info anchor="bottom" id="Android Profiler" order="8" />
       <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.49946696" visible="true" weight="0.20607375" />
       <window_info anchor="bottom" id="Find" order="10" sideWeight="0.49743262" weight="0.25603217" />
@@ -482,7 +481,8 @@
     <MESSAGE value="ver 1.1 :D" />
     <MESSAGE value="nothing new." />
     <MESSAGE value="Rewrited. 1.2 :D" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rewrited. 1.2 :D" />
+    <MESSAGE value="still a bug in socket" />
+    <option name="LAST_COMMIT_MESSAGE" value="still a bug in socket" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://D:/cp/NFC/app/src/main/java/com/example/nfc/RecvActivity.java" />
@@ -519,20 +519,9 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/RecvActivity.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_receiving.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_nfcmain.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/ClientThread.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main2.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Main2Activity.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Wifi_APManager.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/BobNdefMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="196" column="40" selection-start-line="196" selection-start-column="40" selection-end-line="196" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_socket_sending.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/SocketSending.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/WifiConfig.java">
@@ -597,14 +586,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="36" column="17" lean-forward="true" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="811">
@@ -625,14 +606,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_sending_get_nfc.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="542">
-          <caret line="69" column="28" lean-forward="true" selection-start-line="69" selection-start-column="28" selection-end-line="69" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receiving_Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
@@ -647,18 +620,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Sending_Get_NFC.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/BobNdefMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="83" column="28" lean-forward="true" selection-start-line="83" selection-start-column="28" selection-end-line="83" selection-end-column="28" />
+        <state relative-caret-position="171">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2068#2417#0" expanded="true" />
-            <element signature="e#2416#2417#0" expanded="true" />
-            <element signature="e#2456#3712#0" expanded="true" />
-            <element signature="e#2614#3652#0" expanded="true" />
-            <element signature="e#3651#3652#0" expanded="true" />
-            <element signature="e#3711#3712#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/ClientThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-416">
+          <caret line="43" column="12" lean-forward="true" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#894#1932#0" expanded="true" />
+            <element signature="e#1931#1932#0" expanded="true" />
+            <element signature="e#2398#2930#0" expanded="true" />
+            <element signature="e#2929#2930#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -666,19 +647,53 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_receving_get_nfc.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="21" column="39" lean-forward="true" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
+        <state relative-caret-position="342">
+          <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_sending_get_nfc.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Receving_Get_NFC.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="93" column="48" lean-forward="true" selection-start-line="93" selection-start-column="48" selection-end-line="93" selection-end-column="48" />
+        <state relative-caret-position="362">
+          <caret line="208" column="39" lean-forward="true" selection-start-line="208" selection-start-column="39" selection-end-line="208" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1655#2903#0" expanded="true" />
-            <element signature="e#2902#2903#0" expanded="true" />
+            <element signature="e#1912#3048#0" expanded="true" />
+            <element signature="e#3047#3048#0" expanded="true" />
+            <element signature="e#3151#3261#0" expanded="true" />
+            <element signature="e#3260#3261#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/nfc/Sending_Get_NFC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="389" column="8" selection-start-line="389" selection-start-column="8" selection-end-line="389" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2068#2417#0" expanded="true" />
+            <element signature="e#2416#2417#0" expanded="true" />
+            <element signature="e#2529#3911#0" expanded="true" />
+            <element signature="e#2912#3878#0" expanded="true" />
+            <element signature="e#3877#3878#0" expanded="true" />
+            <element signature="e#3910#3911#0" expanded="true" />
           </folding>
         </state>
       </provider>

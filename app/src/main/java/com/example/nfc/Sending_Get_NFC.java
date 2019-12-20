@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
@@ -15,6 +16,7 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,13 +25,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
-import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -52,12 +55,19 @@ public class Sending_Get_NFC extends AppCompatActivity {
     private String serverAddress;
     private String IPAd_String;
 
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE" };
+
     int isWifiEnableStatue = 0, isWifiConnectedStatue = 0, nfcStatue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sending_get_nfc);
+
+        verifyStoragePermissions(Sending_Get_NFC.this);
 
         checkNFCFunction();
         textView = (TextView) findViewById(R.id.tv);
@@ -81,38 +91,62 @@ public class Sending_Get_NFC extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Thread sender = new Thread(new Runnable() {
+
+
+                int lastdot = 0;
+                lastdot = URI_Path.lastIndexOf('/');
+                final String fileName = URI_Path.substring(lastdot+1);
+
+                Toast.makeText(Sending_Get_NFC.this, URI_Path, Toast.LENGTH_SHORT).show();
+
+                new Thread() {
                     @Override
                     public void run() {
 
                         try {
-//                            Toast.makeText(Sending_Get_NFC.this, serverAddress, Toast.LENGTH_SHORT).show();
-                            Socket socket = new Socket(serverAddress, 20001);
-                            socket.setSoTimeout(10000);
-//
-                            String str = editText.getText().toString();
-//                            Toast.makeText(Sending_Get_NFC.this, str, Toast.LENGTH_SHORT).show();
-                            //给服务端发送消息
-                            PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-                            printWriter.write(str + "\r\n");
-                            printWriter.flush();
 
-                            //关闭资源
-                            printWriter.close();
-                            socket.close();
+                            sendFile(URI_Path, fileName);
+
+//                            Socket socket = new Socket(serverAddress, 20001);
+//                            socket.setSoTimeout(10000);
+////
+//                            String str = editText.getText().toString();
+////                            Toast.makeText(Sending_Get_NFC.this, str, Toast.LENGTH_SHORT).show();
+//                            //给服务端发送消息
+//                            PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+//                            printWriter.write(str + "\r\n");
+//                            printWriter.flush();
+//
+//                            //关闭资源
+//                            printWriter.close();
+//                            socket.close();
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
 
                     }
-                });
-                sender.start();
+                }.start();
             }
         });
 
     }
-    //  * * * * * * * * * * * * * * * * * * * * * * * NFC start * * * * * * * * * * * * * * * * * * * * * * * ↓
+
+    public static void verifyStoragePermissions(Activity activity) {
+
+        try {
+            //检测是否有写的权限
+            int permission = ActivityCompat.checkSelfPermission(activity,
+                    "android.permission.WRITE_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // 没有写的权限，去申请写的权限，会弹出对话框
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     //  回调,当NFC消息过来的时候自动调用.
     @Override
@@ -131,12 +165,16 @@ public class Sending_Get_NFC extends AppCompatActivity {
         }
     }
 
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1) {
                 Uri uri = data.getData();
+
                 try {
-                    URI_Path = uri.getPath();
+                    URI_Path = uri.getPath().toString();
+
+                    URI_Path = "/storage/emulated/0/" + URI_Path.substring(URI_Path.indexOf("external_files/") + 15);
+
                     Toast.makeText(this, "文件路径：" + URI_Path, Toast.LENGTH_SHORT).show();
                 }
                 catch (NullPointerException e){
@@ -239,7 +277,7 @@ public class Sending_Get_NFC extends AppCompatActivity {
         } else {
             //  检查机器NFC是否开启
             if (!mNfcAdapter.isEnabled()) {
-                //  机器Nfc未开启 提示用户开启 这里采用对话框的方式<PS:这个开启了  可以进行对NFC的信息读写>
+                //  机器Nfc未开启 提示用户开启
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("警告").setMessage("本机NFC功能未开启,是否开启(不开启将无法继续)").setNegativeButton("开启", new DialogInterface.OnClickListener() {
                     @Override
@@ -334,34 +372,30 @@ public class Sending_Get_NFC extends AppCompatActivity {
         return mWifi.isConnected();
     }
 
-    public String SendFile(String fileName, String path, String ipAddress, int port) {
-        try {
-            Socket name = new Socket(ipAddress, port);
-            OutputStream outputName = name.getOutputStream();
-            OutputStreamWriter outputWriter = new OutputStreamWriter(outputName);
-            BufferedWriter bwName = new BufferedWriter(outputWriter);
-            bwName.write(fileName);
-            bwName.close();
-            outputWriter.close();
-            outputName.close();
-            name.close();
-
-            Socket data = new Socket(ipAddress, port);
-            OutputStream outputData = data.getOutputStream();
-            FileInputStream fileInput = new FileInputStream(path);
-            int size = -1;
-            byte[] buffer = new byte[1024];
-            while ((size = fileInput.read(buffer, 0, 1024)) != -1) {
-                outputData.write(buffer, 0, size);
-            }
-            outputData.close();
-            fileInput.close();
-            data.close();
-            return fileName + " 发送完成";
-        } catch (Exception e) {
-            return "发送错误:\n" + e.getMessage();
+    public void sendFile(String path, String FileName) throws IOException {
+        Socket s = new Socket(serverAddress, 20001);
+        OutputStream out = s.getOutputStream();
+        //将文件名写在流的头部以#分割
+        out.write((FileName + "#").getBytes());
+        System.out.println("path: "+path);
+        FileInputStream inputStream = new FileInputStream(new File(path));
+        byte[] buf = new byte[1024];
+        int len;
+        //判断是否读到文件末尾
+        while ((len = inputStream.read(buf)) != -1) {
+            out.write(buf, 0, len);//将文件循环写入输出流
         }
-    }
+        //告诉服务端，文件已传输完毕
+        s.shutdownOutput();
 
+        //获取从服务端反馈的信息
+        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        String serverBack = in.readLine();
+        Log.d("TAG", serverBack);
+        //资源关闭
+        s.close();
+        inputStream.close();
+
+    }
 
 }

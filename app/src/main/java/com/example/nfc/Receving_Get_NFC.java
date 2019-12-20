@@ -7,6 +7,8 @@ import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.provider.Settings;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,12 +17,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -34,76 +35,82 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
     //  EditText
 
     private Context mContext;
-
     private ServerSocket server;
-
     private String SSID;
     private String SSIDKey;
-
-
-
     private Button btnSend;
+    private TextView textView;
 
+    private Handler handler=null;
+
+    private String content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receving_get_nfc);
 
+        handler=new Handler();
+
+        textView = findViewById(R.id.tvmsg);
+
         mContext = this;
         checkNFCFunction();
-
 
         final Intent intent = getIntent();
         SSID = intent.getStringExtra("SSID");
         SSIDKey = intent.getStringExtra("SSIDKey");
         Toast.makeText(this, SSID +","+ SSIDKey , Toast.LENGTH_LONG).show();
 
-
-
         //  注册事件  并触发自动申请权限
         mNfcAdapter.setNdefPushMessageCallback(this, this);
 
-
-        Thread listener = new Thread(new Runnable() {
+        new Thread() {
             @Override
             public void run() {
-
-                TextView textView;
 
                 int port = 20001;
                 try {
                     server = new ServerSocket(port);
-                    while (server != null) {
-                        try {
-                            Socket socket = server.accept();
+//                    while (server != null) {
+                        receiveFile();
 
-                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                        try {
+//                            Socket socket = server.accept();
+//
+//                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//
+//                            content = null;
+//                            while ((content=bufferedReader.readLine() )!= null) {
+//
+//                                handler.post(runnableUI);
+//                            }
+//
+//                            //关闭连接
+//                            bufferedReader.close();
+//                            socket.close();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
 
-                            String content = null;
-                            while ((content=bufferedReader.readLine() )!= null) {
-                                textView = findViewById(R.id.tvmsg);
-                                textView.setText("1");
-//                                Toast.makeText(Receving_Get_NFC.this, "接收到消息：" +content, Toast.LENGTH_LONG).show();
-                            }
 
-                            //关闭连接
-                            bufferedReader.close();
-                            socket.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-//                            Toast.makeText(Receving_Get_NFC.this, "error", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+//                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
             }
-        });
-        listener.start();
+        }.start();
 
     }
+
+    Runnable runnableUI = new Runnable() {
+        @Override
+        public void run() {
+            textView.setText(content);
+        }
+    };
+
 
     //  在Nfc设备相互接触的时候 调用这个方法  进行消息的发送
     @Override
@@ -161,40 +168,51 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
         }
     }
 
-    // 文件接收方法
-    public String ReceiveFile() {
-        try {
-            // 接收文件名
-            Socket name = server.accept();
-            InputStream nameStream = name.getInputStream();
-            InputStreamReader streamReader = new InputStreamReader(nameStream);
-            BufferedReader br = new BufferedReader(streamReader);
-            String fileName = br.readLine();
-            br.close();
-            streamReader.close();
-            nameStream.close();
-            name.close();
 
-            // 接收文件数据
-            Socket data = server.accept();
-            InputStream dataStream = data.getInputStream();
-            File dir = new File("/sdcard/NFCAssitant"); // 创建文件的存储路径
-            if (!dir.exists()) {
-                dir.mkdirs();
+    public synchronized void receiveFile() {
+        try {
+            ServerSocket ss = new ServerSocket(20001);
+            while (true) {
+                Socket socket = ss.accept();
+                InputStream in = socket.getInputStream();
+                int content;
+                //装载文件名的数组
+                byte[] c = new byte[1024];
+                //解析流中的文件名,也就是开头的流
+                for (int i = 0; (content = in.read()) != -1; i++) {
+                    //表示文件名已经读取完毕
+                    if (content == '#') {
+                        System.out.println("File name get.");
+                        break;
+                    }
+                    c[i] = (byte) content;
+                }
+                //将byte[]转化为字符,也就是我们需要的文件名
+                String FileName = new String(c, "utf-8").trim();
+
+                System.out.println(FileName);
+
+                //创建一个文件,指定保存路径和刚才传输过来的文件名
+                OutputStream saveFile = new FileOutputStream(
+                        new File(Environment.getExternalStorageDirectory().toString(), FileName));
+                byte[] buf = new byte[1024];
+                int len;
+                //判断是否读到文件末尾
+                while ((len = in.read(buf)) != -1) {
+                    saveFile.write(buf, 0, len);
+                }
+                saveFile.flush();
+                saveFile.close();
+                //告诉发送端我已经接收完毕
+                OutputStream outputStream = socket.getOutputStream();
+                System.out.println("Get OK!");
+                outputStream.write("文件接收成功".getBytes());
+                outputStream.flush();
+                outputStream.close();
+                socket.close();
             }
-            String savePath = "/sdcard/NFCAssitant/" + fileName; // 定义完整的存储路径
-            FileOutputStream file = new FileOutputStream(savePath, false);
-            byte[] buffer = new byte[1024];
-            int size = -1;
-            while ((size = dataStream.read(buffer)) != -1) {
-                file.write(buffer, 0, size);
-            }
-            file.close();
-            dataStream.close();
-            data.close();
-            return fileName + " 接收完成";
         } catch (Exception e) {
-            return "接收错误:\n" + e.getMessage();
+            e.printStackTrace();
         }
     }
 

@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:text="请靠近接收端"
         android:textColor="#FFFFFF"
-        android:textSize="24dp" />
+        android:textSize="16dp" />
 
     <TextView
         android:id="@+id/tv2"
