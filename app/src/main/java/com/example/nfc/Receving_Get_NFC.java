@@ -16,13 +16,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  * 触屏发送信息
@@ -33,14 +33,17 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
     private NfcAdapter mNfcAdapter;
     //  EditText
 
-    private TextView tips;
-
     private Context mContext;
+
+    private ServerSocket server;
 
     private String SSID;
     private String SSIDKey;
 
+
+
     private Button btnSend;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,37 +53,55 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
         mContext = this;
         checkNFCFunction();
 
-        tips = findViewById(R.id.tips);
 
         final Intent intent = getIntent();
         SSID = intent.getStringExtra("SSID");
         SSIDKey = intent.getStringExtra("SSIDKey");
         Toast.makeText(this, SSID +","+ SSIDKey , Toast.LENGTH_LONG).show();
 
+
+
         //  注册事件  并触发自动申请权限
         mNfcAdapter.setNdefPushMessageCallback(this, this);
 
-//        btnSend = (Button) findViewById(R.id.btnSend);
-//        btnSend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String URI_Path = intent.getStringExtra("URI_Path");
-//
-//
-//                final String path = URI_Path;
-//                final String fileName = "Testfile.jpg";
-//                final String ipAddress = "192.168.1.143";
-//                final int port = 9999;
-//
-//                Thread sendThread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        SendFile(fileName, path, ipAddress, port);
-//                    }
-//                });
-//                sendThread.start();
-//            }
-//        });
+
+        Thread listener = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                TextView textView;
+
+                int port = 20001;
+                try {
+                    server = new ServerSocket(port);
+                    while (server != null) {
+                        try {
+                            Socket socket = server.accept();
+
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                            String content = null;
+                            while ((content=bufferedReader.readLine() )!= null) {
+                                textView = findViewById(R.id.tvmsg);
+                                textView.setText("1");
+//                                Toast.makeText(Receving_Get_NFC.this, "接收到消息：" +content, Toast.LENGTH_LONG).show();
+                            }
+
+                            //关闭连接
+                            bufferedReader.close();
+                            socket.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+//                            Toast.makeText(Receving_Get_NFC.this, "error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        listener.start();
 
     }
 
@@ -140,51 +161,41 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
         }
     }
 
-    public String SendFile(String fileName, String path, String ipAddress, int port) {
+    // 文件接收方法
+    public String ReceiveFile() {
         try {
-            Socket name = new Socket(ipAddress, port);
-            OutputStream outputName = name.getOutputStream();
-            OutputStreamWriter outputWriter = new OutputStreamWriter(outputName);
-            BufferedWriter bwName = new BufferedWriter(outputWriter);
-            bwName.write(fileName);
-            bwName.close();
-            outputWriter.close();
-            outputName.close();
+            // 接收文件名
+            Socket name = server.accept();
+            InputStream nameStream = name.getInputStream();
+            InputStreamReader streamReader = new InputStreamReader(nameStream);
+            BufferedReader br = new BufferedReader(streamReader);
+            String fileName = br.readLine();
+            br.close();
+            streamReader.close();
+            nameStream.close();
             name.close();
 
-            Socket data = new Socket(ipAddress, port);
-            OutputStream outputData = data.getOutputStream();
-            FileInputStream fileInput = new FileInputStream(path);
-            int size = -1;
+            // 接收文件数据
+            Socket data = server.accept();
+            InputStream dataStream = data.getInputStream();
+            File dir = new File("/sdcard/NFCAssitant"); // 创建文件的存储路径
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            String savePath = "/sdcard/NFCAssitant/" + fileName; // 定义完整的存储路径
+            FileOutputStream file = new FileOutputStream(savePath, false);
             byte[] buffer = new byte[1024];
-            while ((size = fileInput.read(buffer, 0, 1024)) != -1) {
-                outputData.write(buffer, 0, size);
+            int size = -1;
+            while ((size = dataStream.read(buffer)) != -1) {
+                file.write(buffer, 0, size);
             }
-            outputData.close();
-            fileInput.close();
+            file.close();
+            dataStream.close();
             data.close();
-            return fileName + " 发送完成";
+            return fileName + " 接收完成";
         } catch (Exception e) {
-            return "发送错误:\n" + e.getMessage();
+            return "接收错误:\n" + e.getMessage();
         }
-    }
-
-    private ArrayList getConnectedIP() {
-        ArrayList connectedIP = new ArrayList();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("/proc/net/arp"));
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] splitted = line.split(" +");
-                if (splitted != null && splitted.length >= 4) {
-                    String ip = splitted[0];
-                    connectedIP.add(ip);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return connectedIP;
     }
 
 }

@@ -1,11 +1,13 @@
 package com.example.nfc;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -15,15 +17,19 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -38,9 +44,13 @@ public class Sending_Get_NFC extends AppCompatActivity {
     private TextView textView_SE;
     private Button btnSend;
     private Button btnFile;
+    private EditText editText;
 
     private String SSID;
     private String SSIDKey;
+    private String URI_Path;
+    private String serverAddress;
+    private String IPAd_String;
 
     int isWifiEnableStatue = 0, isWifiConnectedStatue = 0, nfcStatue;
 
@@ -55,6 +65,7 @@ public class Sending_Get_NFC extends AppCompatActivity {
         textView_SE = findViewById(R.id.tv3);
         btnSend = findViewById(R.id.btnSend);
         btnFile = findViewById(R.id.btnFile);
+        editText = findViewById(R.id.et);
 
         btnFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,21 +78,36 @@ public class Sending_Get_NFC extends AppCompatActivity {
         });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                final String path = "/storage/emulated/0/qqmusic/song/A.mp3";
-                final String fileName = "A.mp3";
-                final String ipAddress = "192.168.1.143";
-                final int port = 9999;
 
-                Thread sendThread = new Thread(new Runnable() {
+                Thread sender = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        SendFile(fileName, path, ipAddress, port);
+
+                        try {
+//                            Toast.makeText(Sending_Get_NFC.this, serverAddress, Toast.LENGTH_SHORT).show();
+                            Socket socket = new Socket(serverAddress, 20001);
+                            socket.setSoTimeout(10000);
+//
+                            String str = editText.getText().toString();
+//                            Toast.makeText(Sending_Get_NFC.this, str, Toast.LENGTH_SHORT).show();
+                            //给服务端发送消息
+                            PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+                            printWriter.write(str + "\r\n");
+                            printWriter.flush();
+
+                            //关闭资源
+                            printWriter.close();
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 });
-                sendThread.start();
+                sender.start();
             }
         });
 
@@ -103,7 +129,22 @@ public class Sending_Get_NFC extends AppCompatActivity {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
             resolveIntent(getIntent());
         }
+    }
 
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1) {
+                Uri uri = data.getData();
+                try {
+                    URI_Path = uri.getPath();
+                    Toast.makeText(this, "文件路径：" + URI_Path, Toast.LENGTH_SHORT).show();
+                }
+                catch (NullPointerException e){
+                    Toast.makeText(this, "error: "+e, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
     }
 
     private void resolveIntent(Intent intent) {
@@ -182,11 +223,11 @@ public class Sending_Get_NFC extends AppCompatActivity {
         WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         DhcpInfo dhcpinfo = wifiManager.getDhcpInfo();
         int SEAd = dhcpinfo.serverAddress;
-        String serverAddress = (SEAd & 0xFF) + "." + ((SEAd >> 8) & 0xFF) + "." + ((SEAd >> 16) & 0xFF) + "." + (SEAd >> 24 & 0xFF);
+        serverAddress = (SEAd & 0xFF) + "." + ((SEAd >> 8) & 0xFF) + "." + ((SEAd >> 16) & 0xFF) + "." + (SEAd >> 24 & 0xFF);
         textView_SE.setText("SE Address: " + serverAddress);
 
         int IPAd = AutoWifi(SSID, SSIDKey);
-        String IPAd_String = (IPAd & 0xFF) + "." + ((IPAd >> 8) & 0xFF) + "." + ((IPAd >> 16) & 0xFF) + "." + (IPAd >> 24 & 0xFF);
+        IPAd_String = (IPAd & 0xFF) + "." + ((IPAd >> 8) & 0xFF) + "." + ((IPAd >> 16) & 0xFF) + "." + (IPAd >> 24 & 0xFF);
         textView_IP.setText("IP Address: " + IPAd_String);
     }
 
@@ -237,18 +278,15 @@ public class Sending_Get_NFC extends AppCompatActivity {
 
     /* 根据传递过来的三个无线网络参数连接wifi网络； */
     private int AutoWifi(String ssid, String passwd) {
-
-
         /*
          * 创建对象，打开wifi功能，等到wifi启动完成后将传递来的wifi网络添加进Network，
-         * 然后等待连接诶成功后，传递设备名称，设备IP，设备端口号给connectedSocketServer方法，
+         * 然后等待连接成功后，传递设备名称，设备IP，设备端口号给connectedSocketServer方法，
          * 用来连接远程Socket服务器；Integer.valueOf(str[5])是将字符串转换为整型；
          */
         /*
          * 定义AutoWifiConfig对象，通过该对象对wifi进行操作； WifiConfig myWifi = new
          * WifiConfig(this); 不能用作全局，不然会出现刷nfc连接wifi，连接到socket，再刷nfc时程序卡死的情况；
          */
-
         WifiConfig myWifi = new WifiConfig(this);
         Boolean b;
         if (!isWifiEnabled()) {

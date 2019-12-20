@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:text="请靠近接收端"
         android:textColor="#FFFFFF"
-        android:textSize="26dp" />
+        android:textSize="24dp" />
 
     <TextView
         android:id="@+id/tv2"
@@ -30,7 +30,7 @@
         android:layout_marginTop="20dp"
         android:text="IP Address"
         android:textColor="#FFFFFF"
-        android:textSize="26dp" />
+        android:textSize="24dp" />
 
     <TextView
         android:id="@+id/tv3"
@@ -42,7 +42,7 @@
         android:layout_marginTop="20dp"
         android:text="SE Address"
         android:textColor="#FFFFFF"
-        android:textSize="26dp" />
+        android:textSize="24dp" />
 
     <Button
         android:id="@+id/btnFile"
@@ -53,7 +53,7 @@
         android:background="#305B9D"
         android:text="选择文件"
         android:textColor="#FFFFFF"
-        android:textSize="26sp" />
+        android:textSize="24dp" />
 
     <Button
         android:id="@+id/btnSend"
@@ -62,8 +62,15 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:background="#305B9D"
-        android:text="发送文件"
+        android:text="socket test"
         android:textColor="#FFFFFF"
-        android:textSize="26sp" />
+        android:textSize="24dp" />
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="#FFFFFF"/>
 
 </LinearLayout>
