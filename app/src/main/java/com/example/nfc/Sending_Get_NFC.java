@@ -1,32 +1,43 @@
 package com.example.nfc;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.DhcpInfo;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-public class Receiving_NFC extends AppCompatActivity {
+public class Sending_Get_NFC extends AppCompatActivity {
     private static final String TAG = "NFC";
     //  NfcAdapter
     private NfcAdapter mNfcAdapter;
 
     private TextView textView;
     private TextView textView_IP;
-    private Button TestButton;
+    private TextView textView_SE;
+    private Button btnSend;
+    private Button btnFile;
 
     private String SSID;
     private String SSIDKey;
@@ -36,11 +47,43 @@ public class Receiving_NFC extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receving);
+        setContentView(R.layout.activity_sending_get_nfc);
 
         checkNFCFunction();
         textView = (TextView) findViewById(R.id.tv);
         textView_IP = findViewById(R.id.tv2);
+        textView_SE = findViewById(R.id.tv3);
+        btnSend = findViewById(R.id.btnSend);
+        btnFile = findViewById(R.id.btnFile);
+
+        btnFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");//无类型限制
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intent, 1);
+            }
+        });
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                final String path = "/storage/emulated/0/qqmusic/song/A.mp3";
+                final String fileName = "A.mp3";
+                final String ipAddress = "192.168.1.143";
+                final int port = 9999;
+
+                Thread sendThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendFile(fileName, path, ipAddress, port);
+                    }
+                });
+                sendThread.start();
+            }
+        });
 
     }
     //  * * * * * * * * * * * * * * * * * * * * * * * NFC start * * * * * * * * * * * * * * * * * * * * * * * ↓
@@ -131,12 +174,20 @@ public class Receiving_NFC extends AppCompatActivity {
         //  真正的解析
         payLoadStr = new String(payloads, languageCodeLength + 1, payloads.length - languageCodeLength - 1, Charset.forName(textEncoding));
         //  解析完成- -NFC阶段结束
-        textView.setText("接受到的信息为:" + payLoadStr);
+        textView.setText(payLoadStr);
         String S[] = payLoadStr.split(",");
         SSID = S[0];
         SSIDKey = S[1];
-        int IPAd = AutoWifi(SSID, SSIDKey, 3);
-        textView_IP.setText("IP Address: " + IPAd);
+
+        WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcpinfo = wifiManager.getDhcpInfo();
+        int SEAd = dhcpinfo.serverAddress;
+        String serverAddress = (SEAd & 0xFF) + "." + ((SEAd >> 8) & 0xFF) + "." + ((SEAd >> 16) & 0xFF) + "." + (SEAd >> 24 & 0xFF);
+        textView_SE.setText("SE Address: " + serverAddress);
+
+        int IPAd = AutoWifi(SSID, SSIDKey);
+        String IPAd_String = (IPAd & 0xFF) + "." + ((IPAd >> 8) & 0xFF) + "." + ((IPAd >> 16) & 0xFF) + "." + (IPAd >> 24 & 0xFF);
+        textView_IP.setText("IP Address: " + IPAd_String);
     }
 
     private void checkNFCFunction() {
@@ -185,9 +236,8 @@ public class Receiving_NFC extends AppCompatActivity {
     }
 
     /* 根据传递过来的三个无线网络参数连接wifi网络； */
-    private int AutoWifi(String ssid, String passwd, Integer type) {
+    private int AutoWifi(String ssid, String passwd) {
 
-        type=3;
 
         /*
          * 创建对象，打开wifi功能，等到wifi启动完成后将传递来的wifi网络添加进Network，
@@ -214,7 +264,7 @@ public class Receiving_NFC extends AppCompatActivity {
             } while (!b);
         }
         if (!isWifiConnect() || !myWifi.getSSID().equals(ssid)) {
-            myWifi.addNetwork(myWifi.CreateWifiInfo(ssid, passwd, type));
+            myWifi.addNetwork(myWifi.CreateWifiInfo(ssid, passwd, 3));
             do {
                 try {
                     Thread.sleep(100);
@@ -245,5 +295,35 @@ public class Receiving_NFC extends AppCompatActivity {
 //        Toast.makeText(this, "检查连接wifi成功完毕", Toast.LENGTH_LONG).show();
         return mWifi.isConnected();
     }
+
+    public String SendFile(String fileName, String path, String ipAddress, int port) {
+        try {
+            Socket name = new Socket(ipAddress, port);
+            OutputStream outputName = name.getOutputStream();
+            OutputStreamWriter outputWriter = new OutputStreamWriter(outputName);
+            BufferedWriter bwName = new BufferedWriter(outputWriter);
+            bwName.write(fileName);
+            bwName.close();
+            outputWriter.close();
+            outputName.close();
+            name.close();
+
+            Socket data = new Socket(ipAddress, port);
+            OutputStream outputData = data.getOutputStream();
+            FileInputStream fileInput = new FileInputStream(path);
+            int size = -1;
+            byte[] buffer = new byte[1024];
+            while ((size = fileInput.read(buffer, 0, 1024)) != -1) {
+                outputData.write(buffer, 0, size);
+            }
+            outputData.close();
+            fileInput.close();
+            data.close();
+            return fileName + " 发送完成";
+        } catch (Exception e) {
+            return "发送错误:\n" + e.getMessage();
+        }
+    }
+
 
 }

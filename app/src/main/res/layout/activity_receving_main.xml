@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#3370CC"
     android:orientation="vertical"
-    tools:context=".SendActivity">
+    tools:context=".Receiving_Main">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,41 +14,30 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="发送文件"
+        android:text="接收文件"
         android:textColor="#FFFFFF"
         android:textSize="36sp" />
 
 
     <Button
-        android:id="@+id/btn_startsend"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:background="#305B9D"
-        android:text="选择文件"
-        android:textColor="#FFFFFF"
-        android:textSize="26sp" />
-
-    <Button
         android:id="@+id/btn_testSSID"
-        android:layout_width="150dp"
+        android:layout_width="180dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:background="#305B9D"
-        android:text="get SSID"
+        android:text="打开热点"
         android:textColor="#FFFFFF"
         android:textSize="26sp" />
 
     <Button
         android:id="@+id/btn_testNFC"
-        android:layout_width="150dp"
+        android:layout_width="180dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:background="#305B9D"
-        android:text="test NFC"
+        android:text="发送NFC信息\n请触碰页面"
         android:textColor="#FFFFFF"
         android:textSize="26sp" />
 

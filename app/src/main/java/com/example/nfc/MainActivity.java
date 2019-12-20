@@ -1,15 +1,16 @@
 package com.example.nfc;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private Button SendButton;
     private Button RecvButton;
 //    private Button TestButton;
+
+    String URI_Path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 //                    pubSSIDKey = S[1];
 
                     //跳转到send
-                    Intent intent=new Intent(MainActivity.this,SendActivity.class);
+                    Intent intent=new Intent(MainActivity.this, Receiving_Main.class);
 //                    intent.putExtra("SSID", pubSSID);
 //                    intent.putExtra("SSIDKey", pubSSIDKey);
                     startActivity(intent);
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (nfcAdapter != null && nfcAdapter.isEnabled()) {
                     Toast.makeText(MainActivity.this, "nfc enabled", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(MainActivity.this, Receiving_NFC.class);
+                    Intent intent=new Intent(MainActivity.this, Sending_Get_NFC.class);
                     startActivity(intent);
                 }
                 else {
@@ -96,49 +99,22 @@ public class MainActivity extends AppCompatActivity {
                 //跳转到recv
             }
         });
-
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1) {
+                Uri uri = data.getData();
+                try {
+                    URI_Path = uri.getPath();
+                    Toast.makeText(this, "文件路径：" + URI_Path, Toast.LENGTH_SHORT).show();
+                }
+                catch (NullPointerException e){
+                    Toast.makeText(this, "error: "+e, Toast.LENGTH_SHORT).show();
+                }
 
-    @RequiresApi(26)
-    private String turnOnHotspot() {
-        WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-        manager.startLocalOnlyHotspot(new WifiManager.LocalOnlyHotspotCallback() {
-
-            @Override
-            public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
-
-                super.onStarted(reservation);
-                String SSID = reservation.getWifiConfiguration().SSID;
-                pubSSID = SSID;
-                String preSharedKey = reservation.getWifiConfiguration().preSharedKey;
-                pubSSIDKey = preSharedKey;
-//                Toast.makeText(MainActivity.this, "wifi hotspot SSID: "+SSID + " password: " + preSharedKey, Toast.LENGTH_SHORT).show();
-                mReservation = reservation;
             }
-
-            @Override
-            public void onStopped() {
-                super.onStopped();
-                Toast.makeText(MainActivity.this, "wifi hotspot onStopped", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailed(int reason) {
-                super.onFailed(reason);
-                Toast.makeText(MainActivity.this, "wifi hotspot failed", Toast.LENGTH_SHORT).show();
-            }
-        }, new Handler());
-
-        String rtString = new String(pubSSID + "," + pubSSIDKey);
-        Toast.makeText(MainActivity.this, rtString, Toast.LENGTH_SHORT).show();
-        return rtString;
-    }
-
-    private void turnOffHotspot() {
-        if (mReservation != null) {
-            mReservation.close();
         }
     }
+
 }
