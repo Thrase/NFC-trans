@@ -1,4 +1,4 @@
-package com.example.nfc;
+package com.xmuhyxx.nfc;
 
 import org.junit.Test;
 

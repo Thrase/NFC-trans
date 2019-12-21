@@ -1,4 +1,4 @@
-package com.example.nfc;
+package com.xmuhyxx.nfc;
 
 import android.Manifest;
 import android.app.Activity;
@@ -55,16 +55,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (nfcAdapter != null && nfcAdapter.isEnabled()) {
-//                    Toast.makeText(MainActivity.this, "nfc enabled", Toast.LENGTH_SHORT).show();
-//                    String SSSSK = turnOnHotspot();
-//                    String S[] = SSSSK.split(",");
-//                    pubSSID = S[0];
-//                    pubSSIDKey = S[1];
 
                     //跳转到send
                     Intent intent=new Intent(MainActivity.this, Receiving_Main.class);
-//                    intent.putExtra("SSID", pubSSID);
-//                    intent.putExtra("SSIDKey", pubSSIDKey);
                     startActivity(intent);
                 }
                 else {
@@ -95,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
                 }
 
-//                Toast.makeText(MainActivity.this,"请打开WLAN以及NFC",Toast.LENGTH_SHORT).show();
-                //跳转到recv
             }
         });
     }

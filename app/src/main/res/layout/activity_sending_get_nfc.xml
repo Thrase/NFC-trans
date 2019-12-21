@@ -62,15 +62,9 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:background="#305B9D"
-        android:text="socket test"
+        android:text="发送文件"
         android:textColor="#FFFFFF"
         android:textSize="24dp" />
 
-    <EditText
-        android:id="@+id/et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:background="#FFFFFF"/>
 
 </LinearLayout>

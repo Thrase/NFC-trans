@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nfc">
+    package="com.xmuhyxx.nfc">
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -18,14 +18,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Receving_Get_NFC" />
+        <activity android:name="com.xmuhyxx.nfc.Receving_Get_NFC" />
         <activity
-            android:name=".Sending_Get_NFC"
+            android:name="com.xmuhyxx.nfc.Sending_Get_NFC"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -35,9 +35,9 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".Receiving_Main" />
+        <activity android:name="com.xmuhyxx.nfc.Receiving_Main" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.xmuhyxx.nfc.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

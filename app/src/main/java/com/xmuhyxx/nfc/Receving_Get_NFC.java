@@ -1,4 +1,4 @@
-package com.example.nfc;
+package com.xmuhyxx.nfc;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
@@ -35,7 +34,6 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
     //  EditText
 
     private Context mContext;
-    private ServerSocket server;
     private String SSID;
     private String SSIDKey;
     private Button btnSend;
@@ -69,35 +67,7 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
             @Override
             public void run() {
 
-                int port = 20001;
-                try {
-                    server = new ServerSocket(port);
-//                    while (server != null) {
-                        receiveFile();
-
-//                        try {
-//                            Socket socket = server.accept();
-//
-//                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//
-//                            content = null;
-//                            while ((content=bufferedReader.readLine() )!= null) {
-//
-//                                handler.post(runnableUI);
-//                            }
-//
-//                            //关闭连接
-//                            bufferedReader.close();
-//                            socket.close();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-
-
-//                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                receiveFile();
 
             }
         }.start();
@@ -170,25 +140,51 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
 
 
     public synchronized void receiveFile() {
+
+//        try {
+//            server = new ServerSocket(20001);
+//            while (server != null) {
+//                try {
+//                    Socket socket = server.accept();
+//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//
+//                    content = null;
+//                    while ((content=bufferedReader.readLine() )!= null) {
+//                        handler.post(runnableUI);
+//                    }
+//
+//                    //关闭连接
+//                    bufferedReader.close();
+//                    socket.close();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
         try {
             ServerSocket ss = new ServerSocket(20001);
-            while (true) {
+            while ( ss!=null ) {
                 Socket socket = ss.accept();
                 InputStream in = socket.getInputStream();
-                int content;
+                int CC;
                 //装载文件名的数组
                 byte[] c = new byte[1024];
                 //解析流中的文件名,也就是开头的流
-                for (int i = 0; (content = in.read()) != -1; i++) {
-                    //表示文件名已经读取完毕
-                    if (content == '#') {
+                for (int i = 0; (CC = in.read()) != -1; i++) {
+                    if (CC == '#') {
                         System.out.println("File name get.");
                         break;
                     }
-                    c[i] = (byte) content;
+                    c[i] = (byte) CC;
                 }
                 //将byte[]转化为字符,也就是我们需要的文件名
                 String FileName = new String(c, "utf-8").trim();
+
+                content = FileName;
+                handler.post(runnableUI);
 
                 System.out.println(FileName);
 
@@ -203,10 +199,10 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
                 }
                 saveFile.flush();
                 saveFile.close();
-                //告诉发送端我已经接收完毕
+
                 OutputStream outputStream = socket.getOutputStream();
                 System.out.println("Get OK!");
-                outputStream.write("文件接收成功".getBytes());
+                outputStream.write("文件发送成功".getBytes());
                 outputStream.flush();
                 outputStream.close();
                 socket.close();

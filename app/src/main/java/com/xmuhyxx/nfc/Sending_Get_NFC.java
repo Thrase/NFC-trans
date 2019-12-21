@@ -1,4 +1,4 @@
-package com.example.nfc;
+package com.xmuhyxx.nfc;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,10 +16,9 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+//import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +46,7 @@ public class Sending_Get_NFC extends AppCompatActivity {
     private TextView textView_SE;
     private Button btnSend;
     private Button btnFile;
-    private EditText editText;
+//    private EditText editText;
 
     private String SSID;
     private String SSIDKey;
@@ -75,7 +74,7 @@ public class Sending_Get_NFC extends AppCompatActivity {
         textView_SE = findViewById(R.id.tv3);
         btnSend = findViewById(R.id.btnSend);
         btnFile = findViewById(R.id.btnFile);
-        editText = findViewById(R.id.et);
+//        editText = findViewById(R.id.et);
 
         btnFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,46 +90,23 @@ public class Sending_Get_NFC extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-
+                btnSend.setText("发送中");
                 int lastdot = 0;
                 lastdot = URI_Path.lastIndexOf('/');
                 final String fileName = URI_Path.substring(lastdot+1);
-
-                Toast.makeText(Sending_Get_NFC.this, URI_Path, Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(Sending_Get_NFC.this, URI_Path, Toast.LENGTH_LONG).show();
                 new Thread() {
                     @Override
                     public void run() {
-
                         try {
-
                             sendFile(URI_Path, fileName);
-
-//                            Socket socket = new Socket(serverAddress, 20001);
-//                            socket.setSoTimeout(10000);
-////
-//                            String str = editText.getText().toString();
-////                            Toast.makeText(Sending_Get_NFC.this, str, Toast.LENGTH_SHORT).show();
-//                            //给服务端发送消息
-//                            PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-//                            printWriter.write(str + "\r\n");
-//                            printWriter.flush();
-//
-//                            //关闭资源
-//                            printWriter.close();
-//                            socket.close();
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }.start();
             }
         });
-
     }
 
     public static void verifyStoragePermissions(Activity activity) {
@@ -172,9 +148,7 @@ public class Sending_Get_NFC extends AppCompatActivity {
 
                 try {
                     URI_Path = uri.getPath().toString();
-
                     URI_Path = "/storage/emulated/0/" + URI_Path.substring(URI_Path.indexOf("external_files/") + 15);
-
                     Toast.makeText(this, "文件路径：" + URI_Path, Toast.LENGTH_SHORT).show();
                 }
                 catch (NullPointerException e){
@@ -242,17 +216,13 @@ public class Sending_Get_NFC extends AppCompatActivity {
 
     private void parseTextUri(NdefRecord record) {
 
-        //  读出所有的PayLoad
         String payLoadStr = "";
         byte[] payloads = record.getPayload();
         byte statusByte = payloads[0];
-        //  得到编码方式
         String textEncoding = ((statusByte & 0200) == 0) ? "UTF-8" : "UTF-16";
-        //  获取语言码的长度
         int languageCodeLength = statusByte & 0077;
-        //  真正的解析
         payLoadStr = new String(payloads, languageCodeLength + 1, payloads.length - languageCodeLength - 1, Charset.forName(textEncoding));
-        //  解析完成- -NFC阶段结束
+
         textView.setText(payLoadStr);
         String S[] = payLoadStr.split(",");
         SSID = S[0];
@@ -264,22 +234,20 @@ public class Sending_Get_NFC extends AppCompatActivity {
         serverAddress = (SEAd & 0xFF) + "." + ((SEAd >> 8) & 0xFF) + "." + ((SEAd >> 16) & 0xFF) + "." + (SEAd >> 24 & 0xFF);
         textView_SE.setText("SE Address: " + serverAddress);
 
-        int IPAd = AutoWifi(SSID, SSIDKey);
+        int IPAd = WifiConnects(SSID, SSIDKey);
         IPAd_String = (IPAd & 0xFF) + "." + ((IPAd >> 8) & 0xFF) + "." + ((IPAd >> 16) & 0xFF) + "." + (IPAd >> 24 & 0xFF);
         textView_IP.setText("IP Address: " + IPAd_String);
     }
 
     private void checkNFCFunction() {
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        //  机器不支持Nfc功能
         if (mNfcAdapter == null) {
             return;
         } else {
-            //  检查机器NFC是否开启
+            //  check nfc
             if (!mNfcAdapter.isEnabled()) {
-                //  机器Nfc未开启 提示用户开启
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("警告").setMessage("本机NFC功能未开启,是否开启(不开启将无法继续)").setNegativeButton("开启", new DialogInterface.OnClickListener() {
+                builder.setTitle("提示").setMessage("点击开启NFC").setNegativeButton("开启", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent setNfc = new Intent(Settings.ACTION_NFC_SETTINGS);
@@ -293,10 +261,9 @@ public class Sending_Get_NFC extends AppCompatActivity {
                 }).setCancelable(false).create().show();
                 return;
             } else {
-                //  NFC 已开启  检查NFC_Beam是否开启  只有这个开启了  才能进行p2p的传输
                 if (!mNfcAdapter.isNdefPushEnabled()) {
                     // NFC_Beam未开启  点击开启
-                    new AlertDialog.Builder(this).setTitle("警告!").setMessage("NFC_Beam功能未开启,是否开启(不开启将无法继续)").setNegativeButton("开启", new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this).setTitle("提示").setMessage("点击开启Android_Beam").setNegativeButton("开启", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent setNfc = new Intent(Settings.ACTION_NFCSHARING_SETTINGS);
@@ -314,22 +281,12 @@ public class Sending_Get_NFC extends AppCompatActivity {
         }
     }
 
-    /* 根据传递过来的三个无线网络参数连接wifi网络； */
-    private int AutoWifi(String ssid, String passwd) {
-        /*
-         * 创建对象，打开wifi功能，等到wifi启动完成后将传递来的wifi网络添加进Network，
-         * 然后等待连接成功后，传递设备名称，设备IP，设备端口号给connectedSocketServer方法，
-         * 用来连接远程Socket服务器；Integer.valueOf(str[5])是将字符串转换为整型；
-         */
-        /*
-         * 定义AutoWifiConfig对象，通过该对象对wifi进行操作； WifiConfig myWifi = new
-         * WifiConfig(this); 不能用作全局，不然会出现刷nfc连接wifi，连接到socket，再刷nfc时程序卡死的情况；
-         */
-        WifiConfig myWifi = new WifiConfig(this);
+    private int WifiConnects(String ssid, String passwd) {
+        WifiConfig wifiConfig = new WifiConfig(this);
         Boolean b;
         if (!isWifiEnabled()) {
             isWifiEnableStatue = 1;
-            myWifi.openWifi();
+            wifiConfig.openWifi();
             do {
                 try {
                     Thread.sleep(100);
@@ -339,8 +296,8 @@ public class Sending_Get_NFC extends AppCompatActivity {
                 b = isWifiEnabled();
             } while (!b);
         }
-        if (!isWifiConnect() || !myWifi.getSSID().equals(ssid)) {
-            myWifi.addNetwork(myWifi.CreateWifiInfo(ssid, passwd, 3));
+        if (!isWifiConnect() || !wifiConfig.getSSID().equals(ssid)) {
+            wifiConfig.addNetwork(wifiConfig.CreateWifiInfo(ssid, passwd, 3));
             do {
                 try {
                     Thread.sleep(100);
@@ -351,7 +308,7 @@ public class Sending_Get_NFC extends AppCompatActivity {
             } while (!b);
             isWifiConnectedStatue = 1;
         }
-        return myWifi.getIPAddress();
+        return wifiConfig.getIPAddress();
     }
 
     /* 检查wifi是否可用；是则返回true； */
@@ -373,28 +330,47 @@ public class Sending_Get_NFC extends AppCompatActivity {
     }
 
     public void sendFile(String path, String FileName) throws IOException {
+//        Socket socket = new Socket(serverAddress, 20001);
+//        socket.setSoTimeout(10000);
+//
+//        String str = editText.getText().toString();
+//        //给服务端发送消息
+//        PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+//        printWriter.write(str + "\r\n");
+//        printWriter.flush();
+//
+//        //关闭资源
+//        printWriter.close();
+//        socket.close();
         Socket s = new Socket(serverAddress, 20001);
         OutputStream out = s.getOutputStream();
+//        PrintStream printStream = new PrintStream(out);
+//        printStream.print(FileName + "#");
+//        printStream.flush();
         //将文件名写在流的头部以#分割
         out.write((FileName + "#").getBytes());
-        System.out.println("path: "+path);
+        out.flush();
+//        System.out.println("path: "+path);
         FileInputStream inputStream = new FileInputStream(new File(path));
         byte[] buf = new byte[1024];
         int len;
         //判断是否读到文件末尾
         while ((len = inputStream.read(buf)) != -1) {
             out.write(buf, 0, len);//将文件循环写入输出流
+            out.flush();
         }
-        //告诉服务端，文件已传输完毕
+//        //告诉服务端，文件已传输完毕
         s.shutdownOutput();
-
-        //获取从服务端反馈的信息
+//
+//        //获取从服务端反馈的信息
         BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         String serverBack = in.readLine();
-        Log.d("TAG", serverBack);
+        btnSend.setText(serverBack);
         //资源关闭
+//        printStream.close();
+        out.close();
         s.close();
-        inputStream.close();
+//        inputStream.close();
 
     }
 
