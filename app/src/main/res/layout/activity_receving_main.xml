@@ -4,41 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3370CC"
     android:orientation="vertical"
-    tools:context=".Receiving_Main">
+    tools:context=".Receiving_Main"
+    android:background="@drawable/bg2">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:gravity="center"
-        android:text="接收文件"
+        android:text="请靠近发送端"
         android:textColor="#FFFFFF"
-        android:textSize="36sp" />
+        android:textSize="40sp" />
 
 
     <Button
         android:id="@+id/btn_testSSID"
-        android:layout_width="180dp"
+        android:layout_width="240dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:background="#305B9D"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/stroke_btn"
         android:text="打开热点"
         android:textColor="#FFFFFF"
-        android:textSize="26sp" />
+        android:textSize="32sp" />
 
     <Button
         android:id="@+id/btn_testNFC"
-        android:layout_width="180dp"
+        android:layout_width="240dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:background="#305B9D"
-        android:text="发送NFC信息\n请触碰页面"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/stroke_btn"
+        android:text="请触碰页面\n发送NFC信息"
         android:textColor="#FFFFFF"
-        android:textSize="26sp" />
+        android:textSize="32sp" />
 
 </LinearLayout>

@@ -4,26 +4,26 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#3370CC">
+    android:background="@drawable/bg2">
 
     <TextView
         android:id="@+id/tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="等待建立WIFI连接"
+        android:text="等待建立WLAN连接"
         android:textColor="#FFFFFF"
-        android:textSize="24sp" />
+        android:textSize="32sp" />
 
     <TextView
         android:id="@+id/tvmsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:text="等待读取文件名"
         android:textColor="#FFFFFF"
-        android:textSize="24sp" />
+        android:textSize="32sp" />
 
 
 </LinearLayout>

@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Sending_Get_NFC"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="#3370CC">
+
+    android:background="@drawable/bg2">
 
     <TextView
         android:id="@+id/tv"
@@ -16,9 +16,10 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:layout_gravity="center"
+        android:layout_marginTop="100dp"
         android:text="请靠近接收端"
         android:textColor="#FFFFFF"
-        android:textSize="16dp" />
+        android:textSize="40dp" />
 
     <TextView
         android:id="@+id/tv2"
@@ -30,7 +31,7 @@
         android:layout_marginTop="20dp"
         android:text="IP Address"
         android:textColor="#FFFFFF"
-        android:textSize="24dp" />
+        android:textSize="32dp" />
 
     <TextView
         android:id="@+id/tv3"
@@ -42,7 +43,7 @@
         android:layout_marginTop="20dp"
         android:text="SE Address"
         android:textColor="#FFFFFF"
-        android:textSize="24dp" />
+        android:textSize="32dp" />
 
     <Button
         android:id="@+id/btnFile"
@@ -50,21 +51,21 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:background="#305B9D"
+        android:background="@drawable/stroke_btn"
         android:text="选择文件"
         android:textColor="#FFFFFF"
-        android:textSize="24dp" />
+        android:textSize="32dp" />
 
     <Button
         android:id="@+id/btnSend"
         android:layout_width="180dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:background="#305B9D"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/stroke_btn"
         android:text="发送文件"
         android:textColor="#FFFFFF"
-        android:textSize="24dp" />
+        android:textSize="32dp" />
 
 
 </LinearLayout>
