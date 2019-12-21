@@ -25,7 +25,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="80dp"
-        android:background="@drawable/stroke_btn"
+        android:background="@drawable/gaussian1"
         android:text="打开热点"
         android:textColor="#FFFFFF"
         android:textSize="32sp" />
@@ -36,7 +36,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="80dp"
-        android:background="@drawable/stroke_btn"
+        android:background="@drawable/gaussian2"
         android:text="请触碰页面\n发送NFC信息"
         android:textColor="#FFFFFF"
         android:textSize="32sp" />

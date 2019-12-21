@@ -51,7 +51,7 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:background="@drawable/stroke_btn"
+        android:background="@drawable/gaussian3"
         android:text="选择文件"
         android:textColor="#FFFFFF"
         android:textSize="32dp" />
@@ -62,10 +62,9 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:background="@drawable/stroke_btn"
+        android:background="@drawable/gaussian4"
         android:text="发送文件"
         android:textColor="#FFFFFF"
         android:textSize="32dp" />
-
 
 </LinearLayout>
