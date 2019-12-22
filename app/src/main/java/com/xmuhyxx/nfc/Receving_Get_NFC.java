@@ -241,7 +241,7 @@ public class Receving_Get_NFC extends AppCompatActivity implements NfcAdapter.Cr
 
                 OutputStream outputStream = socket.getOutputStream();
                 System.out.println("Get OK!");
-                outputStream.write("文件发送成功".getBytes());
+                outputStream.write("发送成功".getBytes());
                 outputStream.flush();
                 outputStream.close();
                 socket.close();
