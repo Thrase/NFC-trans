@@ -185,8 +185,13 @@ public class Sending_Get_NFC extends AppCompatActivity {
 
                 try {
                     URI_Path = uri.getPath().toString();
-                    URI_Path = "/storage/emulated/0/" + URI_Path.substring(URI_Path.indexOf("external_files/") + 15);
-                    Toast.makeText(this, "文件路径：" + URI_Path, Toast.LENGTH_SHORT).show();
+                    int head_String = URI_Path.indexOf("external_files/");
+                    if (head_String!=-1) {
+                        URI_Path = "/storage/emulated/0/" + URI_Path.substring(head_String + 15);
+                        Toast.makeText(this, "文件路径：" + URI_Path, Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                        Toast.makeText(this, "文件路径有误，请从资源管理器根目录查找文件", Toast.LENGTH_SHORT).show();
                 }
                 catch (NullPointerException e){
                     Toast.makeText(this, "error: "+e, Toast.LENGTH_SHORT).show();
